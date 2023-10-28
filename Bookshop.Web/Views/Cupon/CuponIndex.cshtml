@@ -1,0 +1,48 @@
+﻿@model IEnumerable<CuponDto>
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="text-white">LISTADO DE CUPONES</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+        <div class="row pb-3">
+            <div class="col-6">
+            </div>
+            <div class="col-6 text-end">
+                <a asp-action="CrearCupon" class="btn btn-outline-info"><i class="bi bi-plus-square"></i> AGREGAR CUPON</a>
+            </div>
+        </div>
+        <!--TABLA-->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">CODIGO DE CUPON</th>
+                    <th scope="col">DESCUENTO</th>
+                    <th scope="col">MONTO MINIMO</th>
+                    <th scope="col"> OPCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <th scope="row"></th>
+                    <td>@item.CodigoCupon</td>
+                    <td>@((item.Descuento).ToString("c"))</td>
+                    <td>@((item.MinCanti).ToString("c"))</td>
+                    <td >
+                            <a asp-action="EliminarCupon" asp-route-cuponId="@item.CuponId" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Eliminar</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

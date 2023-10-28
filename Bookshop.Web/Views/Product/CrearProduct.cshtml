@@ -1,0 +1,64 @@
+﻿@model ProductDto
+
+<style>
+    /* Estilo personalizado para el formulario */
+    .my-form {
+        max-width: 600px; 
+        margin: 0 auto
+    }
+</style>
+<form asp-action="CrearProduct" class="my-form">
+    <div class="container border p-3">
+        <h1 class="text-white text-center">Agregar Producto</h1>
+        <hr />
+        <div class="form-group">
+            <label class="form-label mt-4"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Datos del cupon</font></font></label>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Name" class="form-control" id="floatingInput" placeholder="">
+                <label for="floatingInput"><font style="vertical-align: inherit;">Nombre</font></font></label>
+                <span asp-validation-for="Name" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="CategoriaName" class="form-control" id="floatingInput" placeholder="">
+                <label for="floatingInput"><font style="vertical-align: inherit;">Categoria</font></font></label>
+                <span asp-validation-for="CategoriaName" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Autor" class="form-control" id="floatingInput" placeholder="">
+                <label for="floatingInput"><font style="vertical-align: inherit;">Autor</font></font></label>
+                <span asp-validation-for="Autor" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Precio" class="form-control" id="floatingInput" placeholder="">
+                <label for="floatingInput"><font style="vertical-align: inherit;">Precio</font></font></label>
+                <span asp-validation-for="Precio" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="ImageUrl" class="form-control" id="floatingInput" placeholder="">
+                <label for="floatingInput"><font style="vertical-align: inherit;">Imagen</font></font></label>
+                <span asp-validation-for="ImageUrl" class="text-danger" />
+            </div>
+
+            
+
+            <div class="row">
+                <div class="col-5 offset-1">
+                    <a asp-action="ProductIndex" class="btn-primary btn form-control">Regresar</a>
+                </div>
+                <div class="col-5">
+                    <input type="submit" value="Create" class="btn btn-success form-control" />
+                </div>
+            </div>
+            
+
+        </div>
+
+        <div>
+        </div>
+
+    </div>
+</form>
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+}

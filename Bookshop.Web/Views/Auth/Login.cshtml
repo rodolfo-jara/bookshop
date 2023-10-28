@@ -1,0 +1,43 @@
+﻿@model LoginRequestDto
+
+<style>
+    /* Estilo personalizado para el formulario */
+    .my-form {
+        max-width: 450px;
+        margin: 0 auto
+    }
+</style>
+<form method="post" class="my-form">
+    <div class="container border p-3">
+        <h1 class="text-white text-center">LOGIN</h1>
+        <div class="row text-center">
+            
+        </div>
+        <hr />
+       
+        
+        <div class="form-group">
+            <div class="form-floating mb-3">
+                <input asp-for="UserName" class="form-control" type="email" id="floatingInput" placeholder="" />
+                <label for="floatingInput"><font style="vertical-align: inherit;">UserName</font></font></label>
+                <span asp-validation-for="UserName" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Password" type="password" class="form-control" id="floatingInput" placeholder="" />
+                <label for="floatingInput"><font style="vertical-align: inherit;">Password</font></font></label>
+                <span asp-validation-for="Password" class="text-danger" />
+            </div>
+
+            <div>
+                <div class="col-6 offset-3">
+                    <button type="submit" class="btn btn-success form-control" value="Submit">Login</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

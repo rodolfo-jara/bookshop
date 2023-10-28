@@ -1,0 +1,32 @@
+﻿@model IEnumerable<ProductDto>
+<form method="post">
+    <div class="container row">
+        @foreach(var item in Model)
+        {
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="p-0 my-3 border rounded">
+                <div class="card">
+                    <h3 class="card-title text-white-50 text-center py-2">@item.Name</h3>
+                    <hr />
+                        <img src="@item.ImageUrl" width="300px;" height="350px;" class="card-img-top" />
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between py-2">
+                                <span class="text-danger" style="font-size:20px;">
+                                    @string.Format("{0:c}", item.Precio)</span>
+                                <span class="rounded-bottom-circle  bg-warning text-white p-1" style="font-size:20px;">@item.CategoriaName</span>
+                            </div>
+                            <p class="card-text text-dark-50">@item.Autor</p>
+                                <div class="row">
+                                    <div class="col">
+                                    <a asp-action="ProductDetalle" asp-route-productId="@item.ProductId" class="btn btn-outline-info form-control">Detalle</a>
+                                    </div>
+                                </div>
+                        </div>
+
+                </div>
+
+            </div>
+        </div>
+        }
+    </div>
+</form>

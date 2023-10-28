@@ -1,0 +1,60 @@
+﻿@model ProductDto
+<style>
+    /* Estilo personalizado para el formulario */
+    .my-form {
+        max-width: 700px;
+        margin: 0 auto
+    }
+</style>
+
+<form method="post" class="my-form">
+    <input asp-for="ProductId" hidden />
+   <div class=" pt-4">
+        <div class="card container" style="border:1px solid #808080;">
+            <div class="card-header row" style="border-radius: 0px;">
+                <div class="col-12 col-md-6">
+                    <h1 class="text-white">@Model.Name</h1>
+                </div>
+                <div class="col-12 col-md-6 text-end">
+                    <h1 class="text-warning">@string.Format("{0:c}",Model.Precio)</h1>
+                </div>
+            </div>
+
+            <div class="card-body">
+                
+                    <div class="row">
+                        <div class="col-12 col-md-6 text-center">
+                            <img src="@Model.ImageUrl" style="border-radius:25px;" width="300px;" height="350px;" class="rounded" />
+                        </div>
+                        <div class="col-10 col-lg-6 text-end">
+                            <div class=" pl-3">
+                                <div class="">
+                                    <span  class="rounded-bottom-circle bg-primary text-success p-2 border">@Model.CategoriaName</span>
+                                </div>
+                            </div>
+                            <div class="col-10  ">
+                                <h1></h1>
+                                <h2 class="text-success">@Model.Autor</h2>
+                            <div class="row mx-4">
+                                <input asp-for="Count" class="form-control" />
+                                <span asp-validation-for="Count" class="text-danger"></span>
+                            </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+            </div>
+            <div class="card-footer row bg-dark">
+                <div class="col-12 col-md-6 pb-1">
+                    <a asp-action="Index" class="btn btn-success btn-square form-control btn-lg" style="height:50px;">Segui Comprando</a>
+                </div>
+                <div class="col-12 col-md-6 ">
+                    <button type="submit" class="btn btn-primary form-control btn-lg" style="height:50px;">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+   </div>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

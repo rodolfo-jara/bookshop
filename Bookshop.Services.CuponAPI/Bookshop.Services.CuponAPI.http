@@ -1,0 +1,6 @@
+@Bookshop.Services.CuponAPI_HostAddress = http://localhost:5252
+
+GET {{Bookshop.Services.CuponAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
