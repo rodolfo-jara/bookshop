@@ -1,32 +1,45 @@
 ﻿@model IEnumerable<ProductDto>
-<form method="post">
-    <div class="container row">
-        @foreach(var item in Model)
+<style>
+    /* Estilo personalizado para las tarjetas */
+    .fixed-image {
+        width: 100%;
+        height: 200px; /* Ajusta la altura según tus necesidades */
+        object-fit: cover; /* Para ajustar la imagen en caso de que tenga diferentes dimensiones */
+    }
+
+    hr {
+        border-top: 5px solid black; /* Cambiamos el color a negro */
+    }
+
+    /* Estilo de borde personalizado */
+    .custom-border {
+        border: 2px solid transparent; /* Agregamos un borde transparente */
+        box-shadow: 0 0 10px rgba(255, 255, 255, 1); /* Establecemos el color blanco (rgba(255, 255, 255, 1)) */
+    }
+</style>
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
         {
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="p-0 my-3 border rounded">
-                <div class="card">
-                    <h3 class="card-title text-white-50 text-center py-2">@item.Name</h3>
-                    <hr />
-                        <img src="@item.ImageUrl" width="300px;" height="350px;" class="card-img-top" />
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between py-2">
-                                <span class="text-danger" style="font-size:20px;">
-                                    @string.Format("{0:c}", item.Precio)</span>
-                                <span class="rounded-bottom-circle  bg-warning text-white p-1" style="font-size:20px;">@item.CategoriaName</span>
-                            </div>
+            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                <div class="card h-100 custom-border rounded">
+                    <!-- Aplicamos el estilo de borde personalizado -->
+                    <img src="@item.ImageUrl" class="card-img-top fixed-image">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title" style="font-size: 20px;">@item.Name</h5>
+                            <h4 class="text-danger" style="font-size: 20px;">@string.Format("{0:c}", item.Precio)</h4>
+                        </div>
+                        <hr />
+                        <div class="d-flex justify-content-between align-items-center">
                             <p class="card-text text-dark-50">@item.Autor</p>
-                                <div class="row">
-                                    <div class="col">
-                                    <a asp-action="ProductDetalle" asp-route-productId="@item.ProductId" class="btn btn-outline-info form-control">Detalle</a>
-                                    </div>
-                                </div>
+                            <span class="rounded-bottom-circle  bg-warning text-white p-1" style="font-size: 20px;">@item.CategoriaName</span>
                         </div>
 
+                        <a asp-action="ProductDetalle" asp-route-productId="@item.ProductId" class="btn btn-outline-info mt-3 w-100">Detalle</a>
+                    </div>
                 </div>
-
             </div>
-        </div>
         }
     </div>
-</form>
+</div>

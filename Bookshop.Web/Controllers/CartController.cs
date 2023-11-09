@@ -1,5 +1,6 @@
 ﻿using Bookshop.Web.Models;
 using Bookshop.Web.Service.IService;
+using Bookshop.Web.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -40,9 +41,38 @@ namespace Bookshop.Web.Controllers
 
             if (response != null && response.IsSuccess)
             {
-                
+                var domain = Request.Scheme + "://" + Request.Host.Value + "/";
+                StripeRequestDto stripeRequestDto = new()
+                {
+                    ApprovedUrl = domain + "cart/Confirmation?orderId=" + orderHeaderDto.OrderHeaderId,
+                    CancelUrl = domain + "cart/checkout",
+                    OrderHeader = orderHeaderDto
+
+                };
+                var stripeResponse = await _orderService.CreateStripeSession(stripeRequestDto);
+                StripeRequestDto stripeResponseReslt = JsonConvert.DeserializeObject<StripeRequestDto>(Convert.ToString(stripeResponse.Result));
+                Response.Headers.Add("Location", stripeResponseReslt.StripeSessionUrl);
+                return new StatusCodeResult(303);
             }
             return View();
+        }
+
+
+       
+        public async Task<IActionResult> Confirmation(int orderId)
+        {
+            ResponseDto? response = await _orderService.ValidateStripeSession(orderId);
+            if (response != null & response.IsSuccess)
+            {
+                OrderHeaderDto orderHeader =JsonConvert.DeserializeObject<OrderHeaderDto>(Convert.ToString(response.Result));
+                if(orderHeader.Status==SD.Status_Approved) 
+                {
+                    return View(orderId);
+                }
+                
+            }
+            
+            return View(orderId);
         }
         //ELIMINAR UN DETALLE DEL CARRITO
         public async Task<IActionResult> Remove(int CartDetailsId)

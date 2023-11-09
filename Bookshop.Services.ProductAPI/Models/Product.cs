@@ -12,6 +12,7 @@ namespace Bookshop.Services.ProductAPI.Models
         public double Precio { get; set; }
         public string Autor { get; set; }
         public string CategoriaName { get; set; }
-        public string ImageUrl { get; set; }
-    }
+        public string? ImageUrl { get; set; }
+		public string? ImageLocalPath { get; set; }
+	}
 }

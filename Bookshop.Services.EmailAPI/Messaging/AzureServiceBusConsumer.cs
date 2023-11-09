@@ -1,4 +1,5 @@
 ﻿using Azure.Messaging.ServiceBus;
+using Bookshop.Services.EmailAPI.Message;
 using Bookshop.Services.EmailAPI.Models.Dto;
 using Bookshop.Services.EmailAPI.Services;
 using Newtonsoft.Json;
@@ -14,8 +15,11 @@ namespace Bookshop.Services.EmailAPI.Messaging
         private readonly IConfiguration _configuration;
         private readonly EmailService _emailService;
 
+        private readonly string orderCreated_Topic;
+        private readonly string orderCreated_Email_Subscription;
+        private ServiceBusProcessor _emailOrderPlacedProcessor;
         private ServiceBusProcessor _emailCartProcessor;
-        private ServiceBusProcessor _reisterUserProcessor;
+        private ServiceBusProcessor _registerUserProcessor;
 
         public AzureServiceBusConsumer(IConfiguration configuration,EmailService emailService)
         {
@@ -23,14 +27,15 @@ namespace Bookshop.Services.EmailAPI.Messaging
             _configuration = configuration;
 
             serviceBusConnectionString = _configuration.GetValue<string>("ServiceBusConnectionString");
-
             emailCartQueue = _configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue");
-
             registerUserQueue = _configuration.GetValue<string>("TopicAndQueueNames:RegisterUserQueue");
+            orderCreated_Topic = _configuration.GetValue<string>("TopicAndQueueNames:OrderCreatedTopic");
+            orderCreated_Email_Subscription = _configuration.GetValue<string>("TopicAndQueueNames:OrderCreated_Email_Subscription");
 
             var client = new ServiceBusClient(serviceBusConnectionString);
             _emailCartProcessor = client.CreateProcessor(emailCartQueue);
-            _reisterUserProcessor = client.CreateProcessor(registerUserQueue);
+            _registerUserProcessor = client.CreateProcessor(registerUserQueue);
+            _emailOrderPlacedProcessor = client.CreateProcessor(orderCreated_Topic,orderCreated_Email_Subscription);
         }
 
         public async Task Start()
@@ -39,9 +44,13 @@ namespace Bookshop.Services.EmailAPI.Messaging
             _emailCartProcessor.ProcessErrorAsync += ErrorHandler;
             await _emailCartProcessor.StartProcessingAsync();
 
-            _reisterUserProcessor.ProcessMessageAsync += OnUserRegisterRequestReceived;
-            _reisterUserProcessor.ProcessErrorAsync += ErrorHandler;
-            await _reisterUserProcessor.StartProcessingAsync();
+            _registerUserProcessor.ProcessMessageAsync += OnUserRegisterRequestReceived;
+            _registerUserProcessor.ProcessErrorAsync += ErrorHandler;
+            await _registerUserProcessor.StartProcessingAsync();
+
+            _emailOrderPlacedProcessor.ProcessMessageAsync += OnOrderPlacedRequestReceived;
+            _emailOrderPlacedProcessor.ProcessErrorAsync += ErrorHandler;
+            await _emailOrderPlacedProcessor.StartProcessingAsync();
         }
 
         
@@ -51,8 +60,11 @@ namespace Bookshop.Services.EmailAPI.Messaging
             await _emailCartProcessor.StopProcessingAsync();
             await _emailCartProcessor.DisposeAsync();
 
-            await _reisterUserProcessor.StopProcessingAsync();
-            await _reisterUserProcessor.DisposeAsync();
+            await _registerUserProcessor.StopProcessingAsync();
+            await _registerUserProcessor.DisposeAsync();
+
+            await _emailOrderPlacedProcessor.StopProcessingAsync();
+            await _emailOrderPlacedProcessor.DisposeAsync();
         }
 
         private async Task OnEmailCartRequestReceived(ProcessMessageEventArgs args)
@@ -72,7 +84,23 @@ namespace Bookshop.Services.EmailAPI.Messaging
                 throw;
             }
         }
+        private async Task OnOrderPlacedRequestReceived(ProcessMessageEventArgs args)
+        {
+            //Aquí es donde recibirá el mensaje
+            var message = args.Message;
+            var body = Encoding.UTF8.GetString(message.Body);
 
+            RecompensasMessage objMessage = JsonConvert.DeserializeObject<RecompensasMessage>(body);
+            try
+            {
+                await _emailService.LogOrderPlaced(objMessage);
+                await args.CompleteMessageAsync(args.Message);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
         private async Task OnUserRegisterRequestReceived(ProcessMessageEventArgs args)
         {
             //Aquí es donde recibirá el mensaje

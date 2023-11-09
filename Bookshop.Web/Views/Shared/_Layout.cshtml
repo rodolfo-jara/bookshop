@@ -5,10 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Bookshop.Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Bookshop.Web.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .navbar-nav .nav-link:hover {
+            background-color: #3498db; /* Cambia el color de fondo al pasar el cursor por encima (azul claro) */
+            color: #fff; /* Cambia el color del texto al pasar el cursor por encima */
+        }
+</style>
 </head>
 <body>
     <header>
@@ -30,23 +37,28 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Mantenimineto</a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" asp-controller="Cupon" asp-action="CuponIndex" >CUPON</a>
-                                <a class="dropdown-item" asp-controller="Product" asp-action="ProductIndex">Productos</a>
-                                <a class="dropdown-item" asp-controller="Cupon">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Separated link</a>
+                                <a class="dropdown-item" asp-controller="Cupon" asp-action="CuponIndex"> &nbsp; <i class="bi bi-bookmark-star"></i> &nbsp; CUPON</a>
+                                <a class="dropdown-item" asp-controller="Product" asp-action="ProductIndex">  &nbsp; <i class="bi bi-folder2-open"></i> &nbsp; PRODUCTOS </a>
+                                
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Cart" asp-action="CartIndex">
-                                &nbsp; <i class="bi bi-cart"></i> &nbsp;
+                            <a class="nav-link text-white" asp-area="" asp-controller="Order" asp-action="OrderIndex">Gestion de ordenes
+                                &nbsp; <i class="bi bi-pencil-square"></i> &nbsp;
                             </a>
                         </li>
+                        
                     </ul>
 
                     <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Cart" asp-action="CartIndex">
+                                Carrito
+                                &nbsp; <i class="bi bi-cart"></i> &nbsp;
+                            </a>
+                        </li>
                         
+                       
                         @if(!User.Identity.IsAuthenticated)
                         {
                         <li class="nav-item">
@@ -58,6 +70,10 @@
                         }
                         else
                         {
+
+
+
+
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="#" >Hola:  @User.Identity.Name</a>
                             </li>
@@ -82,11 +98,25 @@
 
         <div class="text-center">
             <i class="bi bi-apple"> JARA </i>  
-            &copy; 2023-Bookshop.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023-COFFE.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    <script>
+  window.watsonAssistantChatOptions = {
+    integrationID: "6082f409-f04a-4ff7-af6f-697d87723fe6", // The ID of this integration.
+    region: "au-syd", // The region your integration is hosted in.
+    serviceInstanceID: "631a0ace-94d3-4af3-8f2c-46662c00187f", // The ID of your service instance.
+    onLoad: async (instance) => { await instance.render(); }
+  };
+  setTimeout(function(){
+    const t=document.createElement('script');
+    t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+    document.head.appendChild(t);
+  });
+</script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -20,8 +20,9 @@ namespace Bookshop.Web.Service
             {
                 ApiType = SD.ApiType.POST,
                 Data=productDto,
-                Url = SD.ProductApiBase + "/api/product"
-            });
+                Url = SD.ProductApiBase + "/api/product",
+				ContentType = SD.ContentType.MultipartFormData
+			});
         }
         //ELIMINAR UN PRODUCT
         public async Task<ResponseDto?> DeleteProductAsync(int id)
@@ -68,8 +69,9 @@ namespace Bookshop.Web.Service
             {
                 ApiType = SD.ApiType.PUT,
                 Data = productDto,
-                Url = SD.ProductApiBase + "/api/product"
-            });
+                Url = SD.ProductApiBase + "/api/product",
+				ContentType = SD.ContentType.MultipartFormData
+			});
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Bookshop.Services.EmailAPI.Data;
+using Bookshop.Services.EmailAPI.Message;
 using Bookshop.Services.EmailAPI.Models;
 using Bookshop.Services.EmailAPI.Models.Dto;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,12 @@ namespace Bookshop.Services.EmailAPI.Services
             message.Append("</ul>");
 
             await LogAndEmail(message.ToString(), cartDto.CartHeader.Email);
+        }
+
+        public async Task LogOrderPlaced(RecompensasMessage rewardsDto)
+        {
+            string message = "New Order Placed. <br/> Order ID : " + rewardsDto.OrderId;
+            await LogAndEmail(message, "admin@gmail.com");
         }
 
         public async Task RegisterUserEmailAndLog(string email)

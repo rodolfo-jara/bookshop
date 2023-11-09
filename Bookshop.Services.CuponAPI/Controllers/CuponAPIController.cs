@@ -90,6 +90,18 @@ namespace Bookshop.Services.CuponAPI.Controllers
                 _db.Cupons.Add(obj);
                 _db.SaveChanges();
 
+
+                var options = new Stripe.CouponCreateOptions
+                {
+                    AmountOff = (long)(cuponDto.Descuento * 100),
+                    Name = cuponDto.CodigoCupon,
+                    Currency = "usd",
+                    Id = cuponDto.CodigoCupon,
+                };
+                var service = new Stripe.CouponService();
+                service.Create(options);
+
+
                 _response.Result = _mapper.Map<CuponDto>(obj);
 
             }
@@ -135,7 +147,11 @@ namespace Bookshop.Services.CuponAPI.Controllers
             {
                 Cupon obj = _db.Cupons.First(u => u.CuponId == id);
                 _db.Cupons.Remove(obj);
-                _db.SaveChanges();  
+                _db.SaveChanges();
+
+                
+                var service = new Stripe.CouponService();
+                service.Delete(obj.CodigoCupon);
 
             }
             catch (Exception ex)

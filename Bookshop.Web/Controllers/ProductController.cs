@@ -128,6 +128,8 @@ namespace Bookshop.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ProductEdidt(ProductDto productDto)
         {
+            if(ModelState.IsValid)
+            { 
             ResponseDto? response = await _productService.UpdateProductAsync(productDto);
 
             if (response != null && response.IsSuccess)
@@ -138,6 +140,7 @@ namespace Bookshop.Web.Controllers
             else
             {
                 TempData["error"] = response?.Message;
+            }
             }
             return View(productDto);
         }
